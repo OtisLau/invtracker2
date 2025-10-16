@@ -14,10 +14,8 @@ default: &default
   pool: 5
   host: 127.0.0.1
   port: 3306
-  username: root
-  password: "@Iamsito4"
-  socket: /tmp/mysql.sock
-
+  username: <%= ENV.fetch("INVTRACKER2_DATABASE_USER", "root") %>
+  password: "<%= ENV["INVTRACKER2_DATABASE_PASSWORD"] %>"
 development:
   <<: *default
   database: invtracker2_development
@@ -54,7 +52,7 @@ production:
     <<: *default
     database: invtracker2_production
     username: invtracker2
-    password: <%= ENV["INVTRACKER2_DATABASE_PASSWORD"] %>
+    password: "<%= ENV["INVTRACKER2_DATABASE_PASSWORD"] %>"
   cache:
     <<: *primary_production
     database: invtracker2_production_cache

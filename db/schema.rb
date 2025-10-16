@@ -13,8 +13,11 @@
 ActiveRecord::Schema[8.0].define(version: 2025_10_10_054813) do
   create_table "products", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
-    t.integer "stock"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "sku"
+    t.integer "reorder_point", default: 0, null: false
+    t.integer "on_hand", default: 0, null: false
+    t.index ["sku"], name: "index_products_on_sku", unique: true
   end
 end

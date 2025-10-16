@@ -1,2 +1,9 @@
-#!/usr/bin/env ruby
-exec "./bin/rails", "server", *ARGV
+#!/usr/bin/env bash
+
+# Start both Vite and Rails in parallel
+trap 'kill 0' SIGINT
+
+bin/vite dev &
+bin/rails server &
+
+wait

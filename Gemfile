@@ -65,3 +65,6 @@ end
 gem "vite_rails", "~> 3.0"
 
 gem "jsbundling-rails"
+
+gem "dotenv-rails"
+

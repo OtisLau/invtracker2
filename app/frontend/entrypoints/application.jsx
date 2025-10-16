@@ -1,6 +1,5 @@
-import React from "react";
 import { createRoot } from "react-dom/client";
-import { AppProvider, Page, Card } from "@shopify/polaris";
+import { AppProvider, Page, Box, Text, Card } from "@shopify/polaris";
 import "@shopify/polaris/build/esm/styles.css";
 
 function loadProducts() {
@@ -16,17 +15,18 @@ function loadProducts() {
 function App({ products }) {
   return (
     <AppProvider i18n={{}}>
-      <Page title="InvTracker (MySQL)">
-        <Card>
-          <div style={{ padding: 12 }}>
-            It works. Products count: <strong>{products.length}</strong>
-          </div>
+      <Page title="Product List">
+        <Card title="Products">
+          <Text as="p">
+            total products: <strong>{products.length}</strong>
+          </Text>
         </Card>
       </Page>
     </AppProvider>
   );
 }
 
+// Initialize the app
 const container = document.getElementById("root");
 console.log("Mount container:", container);
 
@@ -37,3 +37,6 @@ if (container) {
 } else {
   console.error("No #root element found");
 }
+
+// Export for HMR
+export default App;
