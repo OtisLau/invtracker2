@@ -5,6 +5,14 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [
     RubyPlugin(),
-    react(),
+    react({
+      jsxRuntime: 'automatic',
+      babel: {
+        plugins: [],
+      },
+    }),
   ],
+  esbuild: {
+    jsxInject: `import React from 'react'`,
+  },
 })
