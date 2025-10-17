@@ -2,12 +2,13 @@ require "test_helper"
 
 class ProductsControllerTest < ActionDispatch::IntegrationTest
   test "should get index" do
-    get products_index_url
+    get products_url
     assert_response :success
   end
 
   test "should get create" do
-    get products_create_url
-    assert_response :success
+    post products_url, params: { product: { name: "Widget", sku: "WIDGET-1", reorder_point: 1, on_hand: 2 } }
+    assert_response :redirect
+    assert_redirected_to products_url
   end
 end

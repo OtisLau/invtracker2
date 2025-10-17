@@ -2,8 +2,12 @@
 
 one:
   name: MyString
-  stock: 1
+  sku: SKU-ONE
+  reorder_point: 5
+  on_hand: 3
 
 two:
   name: MyString
-  stock: 1
+  sku: SKU-TWO
+  reorder_point: 2
+  on_hand: 0
