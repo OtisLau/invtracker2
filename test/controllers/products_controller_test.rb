@@ -11,3 +11,4 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 end
+#this test is for the update action
