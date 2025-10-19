@@ -47,6 +47,6 @@ class ProductsController < ApplicationController
   private
 
   def product_params
-    params.require(:product).permit(:name, :sku, :reorder_point, :on_hand)
+    params.require(:product).permit(:name, :sku, :reorder_point, :on_hand, :max)
   end
 end

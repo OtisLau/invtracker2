@@ -33,6 +33,7 @@ export default function ProductDashboard({ initialProducts }) {
     sku: "",
     reorder_point: "0",
     on_hand: "0",
+    max: "0",
   });
   const [saving, setSaving] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
@@ -70,6 +71,7 @@ export default function ProductDashboard({ initialProducts }) {
       sku: "",
       reorder_point: "0",
       on_hand: "0",
+      max: "0",
     });
   };
 
@@ -92,6 +94,7 @@ export default function ProductDashboard({ initialProducts }) {
       sku: product.sku || "",
       reorder_point: String(product.reorder_point ?? 0),
       on_hand: String(product.on_hand ?? 0),
+      max: String(product.max ?? 0),
       id: product.id,
     });
     setModalOpen(true);
@@ -119,6 +122,7 @@ export default function ProductDashboard({ initialProducts }) {
       sku: formValues.sku.trim(),
       reorder_point: Number(formValues.reorder_point) || 0,
       on_hand: Number(formValues.on_hand) || 0,
+      max: Number(formValues.max) || 0,
     };
 
     if (!payload.name || !payload.sku) {
@@ -275,6 +279,16 @@ export default function ProductDashboard({ initialProducts }) {
               value={formValues.on_hand}
               onChange={(value) =>
                 setFormValues((prev) => ({ ...prev, on_hand: value }))
+              }
+              autoComplete="off"
+              min={0}
+            />
+            <TextField
+              label="Max"
+              type="number"
+              value={formValues.max}
+              onChange={(value) =>
+                setFormValues((prev) => ({ ...prev, max: value }))
               }
               autoComplete="off"
               min={0}

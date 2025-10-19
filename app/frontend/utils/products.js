@@ -18,5 +18,6 @@ export function castProductAttributes(product) {
     ...product,
     on_hand: Number(product.on_hand ?? 0),
     reorder_point: Number(product.reorder_point ?? 0),
+    max: Number(product.max ?? 0),
   };
 }
