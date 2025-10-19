@@ -20,6 +20,7 @@ import {
   castProductAttributes,
   getCsrfToken,
 } from "../utils/products.js";
+import StockLevelBar from "./StockLevelBar.jsx";
 
 export default function ProductDashboard({ initialProducts }) {
   const [products, setProducts] = useState(
@@ -447,6 +448,7 @@ export default function ProductDashboard({ initialProducts }) {
                     { title: "SKU" },
                     { title: "On hand" },
                     { title: "Reorder point" },
+                    { title: "Stock level" },
                     { title: "Actions" },
                   ]}
                 >
@@ -474,6 +476,13 @@ export default function ProductDashboard({ initialProducts }) {
                           </Badge>
                         </IndexTable.Cell>
                         <IndexTable.Cell>{product.reorder_point}</IndexTable.Cell>
+                        <IndexTable.Cell>
+                          <StockLevelBar
+                            onHand={product.on_hand}
+                            reorderPoint={product.reorder_point}
+                            max={product.max}
+                          />
+                        </IndexTable.Cell>
                         <IndexTable.Cell>
                           <InlineStack gap="200">
                             <Button
