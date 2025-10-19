@@ -4,35 +4,34 @@ const numberFormatter = new Intl.NumberFormat();
 
 const formatNumber = (value) => numberFormatter.format(value);
 
-export default function StockLevelBar({
-  onHand = 0,
-  reorderPoint = 0,
-  max = 0,
-}) {
-  // Guard against bad input so the visuals never explode.
+export default function StockLevelBar({ onHand = 0, reorderPoint = 0, max = 0 }) {
+  // Clamp everything up front so a weird payload never wrecks the chart.
   const safeOnHand = Math.max(Number(onHand) || 0, 0);
   const safeReorder = Math.max(Number(reorderPoint) || 0, 0);
   const safeMax = Math.max(Number(max) || 0, 0);
 
-  // If max isn't supplied, fall back to the larger of on-hand/reorder.
-  const fallbackMax = Math.max(safeOnHand, safeReorder, 1);
-  const scaleMax = safeMax > 0 ? safeMax : fallbackMax;
+  // Max is required, but I still guard so we never divide by zero.
+  const scaleMax = Math.max(safeMax, 1);
 
+  // Translate the raw counts into percentages for the bar/markers.
   const onHandPercent = Math.min((safeOnHand / scaleMax) * 100, 100);
   const reorderPercent =
     safeReorder > 0 ? Math.min((safeReorder / scaleMax) * 100, 100) : null;
 
+  // Low stock lights the bar red, over max shows the warning below.
   const isLowStock = safeReorder > 0 && safeOnHand < safeReorder;
-  const isOverCapacity = safeMax > 0 && safeOnHand > safeMax;
+  const isOverCapacity = safeOnHand > safeMax;
 
+  // These formatted strings get reused in a few spots.
   const formatted = {
     onHand: formatNumber(safeOnHand),
     reorder: formatNumber(safeReorder),
     scaleMax: formatNumber(scaleMax),
-    maxLabel: formatNumber(safeMax > 0 ? safeMax : scaleMax),
+    maxLabel: formatNumber(safeMax),
     overBy: formatNumber(Math.max(safeOnHand - safeMax, 0)),
   };
 
+  // Screen reader text spells out the same story the visuals tell.
   const ariaLabelParts = [
     `On hand ${formatted.onHand} of max ${formatted.scaleMax}.`,
   ];
@@ -58,7 +57,7 @@ export default function StockLevelBar({
           bottom: 0,
           width: "2px",
           backgroundColor:
-            "var(--p-color-border-subdued, rgba(0, 0, 0, 0.7))",
+            "var(--p-color-border-subdued, rgba(0, 0, 0, 0.5))",
           transform: "translateX(-0.5px)",
           pointerEvents: "none",
         };
@@ -113,7 +112,7 @@ export default function StockLevelBar({
             {formatted.scaleMax}
           </Text>
         </InlineStack>
-
+   
       </Box>
 
       {isOverCapacity ? (
