@@ -99,7 +99,7 @@ export default function StockLevelBar({ onHand = 0, reorderPoint = 0, max = 0 })
       </Box>
 
       <Box
-        marginBlockStart="100"
+        paddingBlockStart="100"
         position="relative"
         paddingInlineStart="150"
         paddingInlineEnd="150"
