@@ -55,7 +55,7 @@ export default function StockLevelBar({ onHand = 0, reorderPoint = 0, max = 0 })
           left: `${reorderPercent}%`,
           top: 0,
           bottom: 0,
-          width: "2px",
+          width: "1.5px",
           backgroundColor:
             "var(--p-color-border-subdued, rgba(0, 0, 0, 0.5))",
           transform: "translateX(-0.5px)",
@@ -88,7 +88,7 @@ export default function StockLevelBar({ onHand = 0, reorderPoint = 0, max = 0 })
       <Box position="relative" paddingInlineStart="150" paddingInlineEnd="150">
         <ProgressBar
           progress={onHandPercent}
-          size="large"
+          size="medium"
           tone={isLowStock ? "critical" : "success"}
           label={ariaLabel}
           labelHidden

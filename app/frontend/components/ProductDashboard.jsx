@@ -38,6 +38,7 @@ export default function ProductDashboard({ initialProducts }) {
   });
   const [saving, setSaving] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
+  const [editingProduct, setEditingProduct] = useState(null);
 
   const csrfToken = useMemo(() => getCsrfToken(), []);
 
@@ -80,11 +81,13 @@ export default function ProductDashboard({ initialProducts }) {
     setModalOpen(false);
     resetForm();
     setSaving(false);
+    setEditingProduct(null);
   };
 
   const handleOpenCreate = () => {
     setModalMode("create");
     resetForm();
+    setEditingProduct(null);
     setModalOpen(true);
   };
 
@@ -98,6 +101,7 @@ export default function ProductDashboard({ initialProducts }) {
       max: String(product.max ?? 0),
       id: product.id,
     });
+    setEditingProduct(product);
     setModalOpen(true);
   };
 
@@ -212,6 +216,7 @@ export default function ProductDashboard({ initialProducts }) {
         prev.filter((existing) => existing.id !== product.id),
       );
       setStatus({ tone: "success", message: "Product deleted." });
+      closeModal();
     } catch (error) {
       console.error("Failed to delete product:", error);
       setStatus({
@@ -224,6 +229,32 @@ export default function ProductDashboard({ initialProducts }) {
   };
 
   const modalTitle = modalMode === "create" ? "Create product" : "Edit product";
+  const modalDeleteLoading =
+    Boolean(editingProduct && deletingId === editingProduct.id);
+  const modalDeleteDisabled = !editingProduct || modalDeleteLoading;
+  const modalSecondaryActions = [
+    {
+      content: "Cancel",
+      onAction: closeModal,
+    },
+  ];
+  const modalFooter =
+    modalMode === "edit"
+      ? (
+          <Button
+            tone="critical"
+            variant="primary"
+            onClick={async () => {
+              if (!editingProduct) return;
+              await handleDelete(editingProduct);
+            }}
+            loading={modalDeleteLoading}
+            disabled={modalDeleteDisabled}
+          >
+            Delete
+          </Button>
+        )
+      : null;
 
   const modalContent = (
     <Modal
@@ -236,12 +267,8 @@ export default function ProductDashboard({ initialProducts }) {
         loading: saving,
         disabled: saving,
       }}
-      secondaryActions={[
-        {
-          content: "Cancel",
-          onAction: closeModal,
-        },
-      ]}
+      secondaryActions={modalSecondaryActions}
+      footer={modalFooter}
     >
       <Modal.Section>
         <FormLayout>
@@ -484,30 +511,16 @@ export default function ProductDashboard({ initialProducts }) {
                           />
                         </IndexTable.Cell>
                         <IndexTable.Cell>
-                          <InlineStack gap="200">
-                            <Button
-                              size="slim"
-                              onClick={(event) => {
-                                event.stopPropagation();
-                                handleOpenEdit(product);
-                                handleSelectionChange(String(product.id), false);
-                              }}
-                            >
-                              Edit
-                            </Button>
-                            <Button
-                              size="slim"
-                              tone="critical"
-                              onClick={async (event) => {
-                                event.stopPropagation();
-                                await handleDelete(product);
-                              }}
-                              loading={deletingId === product.id}
-                              disabled={deletingId === product.id}
-                            >
-                              Delete
-                            </Button>
-                          </InlineStack>
+                          <Button
+                            size="slim"
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              handleOpenEdit(product);
+                              handleSelectionChange(String(product.id), false);
+                            }}
+                          >
+                            Edit
+                          </Button>
                         </IndexTable.Cell>
                       </IndexTable.Row>
                     );
