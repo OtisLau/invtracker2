@@ -4,6 +4,7 @@ import {
   Button,
   Card,
   IndexTable,
+  InlineStack,
   Text,
   useIndexResourceState,
 } from "@shopify/polaris";
@@ -84,10 +85,10 @@ export default function ProductTable({
           ]}
           headings={[
             { title: "Name" },
-            { title: "SKU" },
-            { title: "On hand" },
-            { title: "Reorder point" },
-            { title: "Stock level" },
+            { title: "SKU", alignment: "center" },
+            { title: "On hand", alignment: "center" },
+            { title: "Reorder point", alignment: "center" },
+            { title: "Stock level", alignment: "center" },
             { title: "Actions" },
           ]}
         >
@@ -109,21 +110,31 @@ export default function ProductTable({
                   </Box>
                 </IndexTable.Cell>
                 <IndexTable.Cell>
-                  <Box paddingBlock={cellPadding}>{product.sku}</Box>
-                </IndexTable.Cell>
-                <IndexTable.Cell>
-                  <Box paddingBlock={cellPadding}>
-                    <Badge tone={isLowStock ? "critical" : "success"}>
-                      {product.on_hand}
-                    </Badge>
+                  <Box paddingBlock={cellPadding} width="100%">
+                    <Text alignment="center" as="span" numeric>
+                      {product.sku}
+                    </Text>
                   </Box>
                 </IndexTable.Cell>
                 <IndexTable.Cell>
-                  <Box paddingBlock={cellPadding}>{product.reorder_point}</Box>
+                  <Box paddingBlock={cellPadding} width="100%">
+                    <InlineStack align="center" blockAlign="center" gap="0" wrap={false} fullWidth>
+                      <Badge tone={isLowStock ? "critical" : "success"}>
+                        {product.on_hand}
+                      </Badge>
+                    </InlineStack>
+                  </Box>
+                </IndexTable.Cell>
+                <IndexTable.Cell>
+                  <Box paddingBlock={cellPadding} width="100%">
+                    <Text alignment="center" as="span" numeric>
+                      {product.reorder_point}
+                    </Text>
+                  </Box>
                 </IndexTable.Cell>
                 <IndexTable.Cell>
                   <Box paddingBlock={cellPadding}>
-                    <StockLevelBar
+                    <StockLevelBar alignment="center"
                       onHand={product.on_hand}
                       reorderPoint={product.reorder_point}
                       max={product.max}
@@ -131,7 +142,7 @@ export default function ProductTable({
                   </Box>
                 </IndexTable.Cell>
                 <IndexTable.Cell>
-                  <Box paddingBlock={cellPadding}>
+                  <Box paddingBlock={cellPadding}>  
                     <Button
                       size="slim"
                       onClick={(event) => {
