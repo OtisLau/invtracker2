@@ -93,6 +93,7 @@ export default function ProductTable({
         >
           {products.map((product, index) => {
             const isLowStock = product.on_hand <= product.reorder_point;
+            const cellPadding = "300";
             return (
               <IndexTable.Row
                 id={String(product.id)}
@@ -101,36 +102,48 @@ export default function ProductTable({
                 selected={selectedResources.includes(String(product.id))}
               >
                 <IndexTable.Cell>
-                  <Text variant="bodyMd" as="span">
-                    {product.name}
-                  </Text>
-                </IndexTable.Cell>
-                <IndexTable.Cell>{product.sku}</IndexTable.Cell>
-                <IndexTable.Cell>
-                  <Badge tone={isLowStock ? "critical" : "success"}>
-                    {product.on_hand}
-                  </Badge>
-                </IndexTable.Cell>
-                <IndexTable.Cell>{product.reorder_point}</IndexTable.Cell>
-                <IndexTable.Cell>
-                  <StockLevelBar
-                    onHand={product.on_hand}
-                    reorderPoint={product.reorder_point}
-                    max={product.max}
-                  />
+                  <Box paddingBlock={cellPadding}>
+                    <Text variant="bodyMd" as="span">
+                      {product.name}
+                    </Text>
+                  </Box>
                 </IndexTable.Cell>
                 <IndexTable.Cell>
-                  <Button
-                    size="slim"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      // clearing selection so edit flow doesn't leave lingering checks
-                      onEdit(product);
-                      handleSelectionChange(String(product.id), false);
-                    }}
-                  >
-                    Edit
-                  </Button>
+                  <Box paddingBlock={cellPadding}>{product.sku}</Box>
+                </IndexTable.Cell>
+                <IndexTable.Cell>
+                  <Box paddingBlock={cellPadding}>
+                    <Badge tone={isLowStock ? "critical" : "success"}>
+                      {product.on_hand}
+                    </Badge>
+                  </Box>
+                </IndexTable.Cell>
+                <IndexTable.Cell>
+                  <Box paddingBlock={cellPadding}>{product.reorder_point}</Box>
+                </IndexTable.Cell>
+                <IndexTable.Cell>
+                  <Box paddingBlock={cellPadding}>
+                    <StockLevelBar
+                      onHand={product.on_hand}
+                      reorderPoint={product.reorder_point}
+                      max={product.max}
+                    />
+                  </Box>
+                </IndexTable.Cell>
+                <IndexTable.Cell>
+                  <Box paddingBlock={cellPadding}>
+                    <Button
+                      size="slim"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        // clearing selection so edit flow doesn't leave lingering checks
+                        onEdit(product);
+                        handleSelectionChange(String(product.id), false);
+                      }}
+                    >
+                      Edit
+                    </Button>
+                  </Box>
                 </IndexTable.Cell>
               </IndexTable.Row>
             );
