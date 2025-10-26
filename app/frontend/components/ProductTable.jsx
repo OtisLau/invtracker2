@@ -89,7 +89,7 @@ export default function ProductTable({
             { title: "On hand", alignment: "center" },
             { title: "Reorder point", alignment: "center" },
             { title: "Stock level", alignment: "center" },
-            { title: "Actions" },
+            { title: "Actions", alignment: "center" },
           ]}
         >
           {products.map((product, index) => {
@@ -133,7 +133,11 @@ export default function ProductTable({
                   </Box>
                 </IndexTable.Cell>
                 <IndexTable.Cell>
-                  <Box paddingBlock={cellPadding}>
+                  <Box
+                    paddingBlock={cellPadding}
+                    width="100%"
+                    style={{ minWidth: "160px" }}
+                  >
                     <StockLevelBar alignment="center"
                       onHand={product.on_hand}
                       reorderPoint={product.reorder_point}
@@ -142,18 +146,20 @@ export default function ProductTable({
                   </Box>
                 </IndexTable.Cell>
                 <IndexTable.Cell>
-                  <Box paddingBlock={cellPadding}>  
-                    <Button
-                      size="slim"
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        // clearing selection so edit flow doesn't leave lingering checks
-                        onEdit(product);
-                        handleSelectionChange(String(product.id), false);
-                      }}
-                    >
-                      Edit
-                    </Button>
+                  <Box paddingBlock={cellPadding} width="100%">
+                    <InlineStack align="center" blockAlign="center" wrap={false} fullWidth> 
+                      <Button
+                        size="slim"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          // clearing selection so edit flow doesn't leave lingering checks
+                          onEdit(product);
+                          handleSelectionChange(String(product.id), false);
+                        }}
+                      >
+                        Edit
+                      </Button>
+                    </InlineStack>
                   </Box>
                 </IndexTable.Cell>
               </IndexTable.Row>
