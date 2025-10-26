@@ -5,21 +5,23 @@ const numberFormatter = new Intl.NumberFormat();
 const formatNumber = (value) => numberFormatter.format(value);
 
 export default function StockLevelBar({ onHand = 0, reorderPoint = 0, max = 0 }) {
-  // Clamp everything up front so a weird payload never wrecks the chart.
+  // Clamp everything up front so an odd payload never wrecks the chart.
   const safeOnHand = Math.max(Number(onHand) || 0, 0);
   const safeReorder = Math.max(Number(reorderPoint) || 0, 0);
   const safeMax = Math.max(Number(max) || 0, 0);
 
-  // Max is required, but I still guard so we never divide by zero.
+  // Max is required, but still guard so we never divide by zero.
   const scaleMax = Math.max(safeMax, 1);
 
-  // Translate the raw counts into percentages for the bar/markers.
+  // Translate raw counts into percentages for the bar and markers.
   const onHandPercent = Math.min((safeOnHand / scaleMax) * 100, 100);
-  const reorderPercent =
-    safeReorder > 0 ? Math.min((safeReorder / scaleMax) * 100, 100) : null;
+  const hasReorderPoint = safeReorder > 0;
+  const reorderPercent = hasReorderPoint
+    ? Math.min((safeReorder / scaleMax) * 100, 100)
+    : null;
 
   // Low stock lights the bar red, over max shows the warning below.
-  const isLowStock = safeReorder > 0 && safeOnHand < safeReorder;
+  const isLowStock = hasReorderPoint && safeOnHand <= safeReorder;
   const isOverCapacity = safeOnHand > safeMax;
 
   // These formatted strings get reused in a few spots.
@@ -35,17 +37,13 @@ export default function StockLevelBar({ onHand = 0, reorderPoint = 0, max = 0 })
   const ariaLabelParts = [
     `On hand ${formatted.onHand} of max ${formatted.scaleMax}.`,
   ];
-  if (safeReorder > 0) {
+  if (hasReorderPoint) {
     ariaLabelParts.push(`Reorder at ${formatted.reorder}.`);
   }
   if (isOverCapacity) {
     ariaLabelParts.push(`Over capacity by ${formatted.overBy}.`);
   }
   const ariaLabel = ariaLabelParts.join(" ");
-
-  const leftHeader =
-    safeReorder > 0 ? `Reorder at ${formatted.reorder}` : `Max ${formatted.maxLabel}`;
-  const rightHeader = `On hand ${formatted.onHand}`;
 
   const reorderMarkerStyle =
     reorderPercent === null
@@ -62,29 +60,33 @@ export default function StockLevelBar({ onHand = 0, reorderPoint = 0, max = 0 })
           pointerEvents: "none",
         };
 
-  const onHandMarkerStyle = {
+  // Keep the label readable when the progress nears either edge.
+  const horizontalTransform =
+    onHandPercent <= 5
+      ? "translate(0, -50%)"
+      : onHandPercent >= 95
+      ? "translate(-100%, -50%)"
+      : "translate(-50%, -50%)";
+
+  const onHandLabelStyle = {
     position: "absolute",
     left: `${onHandPercent}%`,
-    transform: "translateX(-50%)",
-    top: "-1.5rem",
+    top: "50%",
+    transform: horizontalTransform,
+    paddingInline: "8px",
+    paddingBlock: "2px",
+    backgroundColor: "var(--p-color-bg-surface, #fff)",
+    borderRadius: "999px",
+    border:
+      "1px solid var(--p-color-border-subdued, rgba(0, 0, 0, 0.2))",
+    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.12)",
+    pointerEvents: "none",
+    whiteSpace: "nowrap",
+    zIndex: 1,
   };
 
   return (
     <Box width="100%">
-      {/* Headline numbers keep the row scannable without opening the detail view */}
-      <InlineStack
-        align="space-between"
-        blockAlign="center"
-        marginBlockEnd="100"
-      >
-        <Text tone="subdued" variant="bodySm" as="span">
-          {leftHeader}
-        </Text>
-        <Text variant="bodySm" as="span">
-          {rightHeader}
-        </Text>
-      </InlineStack>
-
       <Box position="relative" paddingInlineStart="150" paddingInlineEnd="150">
         <ProgressBar
           progress={onHandPercent}
@@ -96,6 +98,11 @@ export default function StockLevelBar({ onHand = 0, reorderPoint = 0, max = 0 })
         {reorderMarkerStyle ? (
           <Box as="span" aria-hidden="true" style={reorderMarkerStyle} />
         ) : null}
+        <Box as="span" aria-hidden="true" style={onHandLabelStyle}>
+          <Text variant="bodyXs" fontWeight="semibold" as="span">
+            {formatted.onHand}
+          </Text>
+        </Box>
       </Box>
 
       <Box
@@ -112,7 +119,6 @@ export default function StockLevelBar({ onHand = 0, reorderPoint = 0, max = 0 })
             {formatted.scaleMax}
           </Text>
         </InlineStack>
-   
       </Box>
 
       {isOverCapacity ? (
