@@ -1,6 +1,8 @@
 class Product < ApplicationRecord
+  belongs_to :store
+
   validates :name, presence: true
-  validates :sku, presence: true, uniqueness: true
+  validates :sku, presence: true, uniqueness: { scope: :store_id }
   validates :reorder_point, numericality: { greater_than_or_equal_to: 0 }
   validates :on_hand, numericality: { greater_than_or_equal_to: 0 }
   validates :max, numericality: { greater_than_or_equal_to: 0 }
