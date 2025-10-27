@@ -5,9 +5,13 @@ one:
   sku: SKU-ONE
   reorder_point: 5
   on_hand: 3
+  max: 10
+  store: default_store
 
 two:
   name: MyString
   sku: SKU-TWO
   reorder_point: 2
   on_hand: 0
+  max: 15
+  store: default_store

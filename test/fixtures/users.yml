@@ -1,0 +1,6 @@
+default_admin:
+  store: default_store
+  email: admin@example.com
+  password_digest: <%= BCrypt::Password.create("Password123!") %>
+  role: admin
+  name: Admin User

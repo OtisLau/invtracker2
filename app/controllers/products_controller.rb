@@ -1,7 +1,7 @@
 class ProductsController < ApplicationController
   protect_from_forgery with: :exception
 
-  before_action :set_product, only: %i[update destroy]
+  before_action :set_product, only: %i[ update destroy ]
 
   def index
     @products = current_user.store.products.order(:name)

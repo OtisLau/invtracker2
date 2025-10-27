@@ -23,7 +23,7 @@
 
   <div>
     <%= form.label :role %>
-    <%= form.select :role, User.roles.keys.map { |role| [role.titleize, role] } %>
+    <%= form.select :role, User.roles.keys.map { |role| [ role.titleize, role ] } %>
   </div>
 
   <div>

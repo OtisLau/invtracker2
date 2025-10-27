@@ -1,5 +1,5 @@
 class RegistrationsController < ApplicationController
-  skip_before_action :require_login, only: %i[new create]
+  skip_before_action :require_login, only: %i[ new create ]
 
   def new
     redirect_to products_path and return if user_signed_in?
