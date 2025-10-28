@@ -11,6 +11,7 @@ class RegistrationsController < ApplicationController
   def create
     @user = User.new(user_params)
     @user.email = @user.email.to_s.downcase
+    @user.role = default_role
     assign_store(@user)
 
     if @user.save
@@ -25,7 +26,7 @@ class RegistrationsController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation, :role)
+    params.require(:user).permit(:name, :email, :password, :password_confirmation)
   end
 
   def assign_store(user)
@@ -36,5 +37,9 @@ class RegistrationsController < ApplicationController
     return user.store = store if store
 
     user.errors.add(:store, "must exist")
+  end
+
+  def default_role
+    User.roles.fetch(:employee)
   end
 end

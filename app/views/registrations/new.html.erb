@@ -22,11 +22,6 @@
   </div>
 
   <div>
-    <%= form.label :role %>
-    <%= form.select :role, User.roles.keys.map { |role| [ role.titleize, role ] } %>
-  </div>
-
-  <div>
     <%= form.label :store_id, "Store" %>
     <% if @stores.any? %>
       <%= form.collection_select :store_id, @stores, :id, :name, prompt: "Select a store" %>
@@ -34,6 +29,8 @@
       <p>No stores available yet. Please contact an administrator.</p>
     <% end %>
   </div>
+
+  <p>Your account will be created with standard employee access.</p>
 
   <div>
     <%= form.submit "Create account" %>
