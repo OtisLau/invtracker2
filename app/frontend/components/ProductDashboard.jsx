@@ -1,3 +1,4 @@
+import { useCallback, useMemo } from "react";
 import {
   Banner,
   Box,
@@ -9,10 +10,11 @@ import { useProductManager } from "../hooks/useProductManager.js";
 import ProductModal from "./ProductModal.jsx";
 import ProductSummary from "./ProductSummary.jsx";
 import ProductTable from "./ProductTable.jsx";
+import { getCsrfToken } from "../utils/products.js";
 
 // This is the main component for the product dashboard.
 // It handles the state of the products and the modal.
-export default function ProductDashboard({ initialProducts }) {
+export default function ProductDashboard({ initialProducts, auth }) {
   const {
     products,
     sortedProducts,
@@ -33,6 +35,64 @@ export default function ProductDashboard({ initialProducts }) {
     handleBulkDelete,
     closeModal,
   } = useProductManager(initialProducts);
+
+  const { signedIn, loginPath, logoutPath } = auth ?? {}; // this is the auth object that is passed from the backend
+
+  const handleLogin = useCallback(() => { // this is the function that is called when the user clicks the sign in button
+    if (!loginPath) {
+      return;
+    }
+
+    window.location.href = loginPath;
+  }, [loginPath]); 
+
+  const handleLogout = useCallback(() => {
+    if (!logoutPath) {
+      return;
+    } // this is the function that is called when the user clicks the sign out button
+
+    const form = document.createElement("form"); 
+    form.method = "POST";  
+    form.action = logoutPath; 
+
+    const methodInput = document.createElement("input"); 
+    methodInput.type = "hidden";
+    methodInput.name = "_method";
+    methodInput.value = "delete";
+    form.appendChild(methodInput);
+
+    const csrfInput = document.createElement("input"); // this is the csrf token that is needed to prevent cross site request forgery
+    csrfInput.type = "hidden";
+    csrfInput.name = "authenticity_token";
+    csrfInput.value = getCsrfToken();
+    form.appendChild(csrfInput);
+
+    document.body.appendChild(form);
+    form.submit();
+    document.body.removeChild(form);
+  }, [logoutPath]);
+
+  const secondaryActions = useMemo(() => { // this is the function that is called when the user clicks the sign out button
+    if (signedIn) {
+      return [
+        {
+          content: "Sign out", 
+          onAction: handleLogout,
+        },
+      ];
+    }
+
+    if (loginPath) {
+      return [
+        {
+          content: "Sign in",
+          onAction: handleLogin,
+        },
+      ];
+    }
+
+    return [];
+  }, [signedIn, loginPath, handleLogin, handleLogout]);
 
   
   return (
@@ -55,6 +115,7 @@ export default function ProductDashboard({ initialProducts }) {
           content: "New product",
           onAction: handleOpenCreate,
         }}
+        secondaryActions={secondaryActions}
       >
         <Layout> 
           <Layout.Section>

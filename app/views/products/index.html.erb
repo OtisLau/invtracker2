@@ -1,4 +1,9 @@
-<div id="root"></div>
+<div
+  id="root"
+  data-user-signed-in="<%= user_signed_in? %>"
+  data-login-path="<%= new_session_path %>"
+  data-logout-path="<%= session_path %>"
+></div>
 
 <script type="application/json" id="bootstrap-products">
   <%= raw @products.to_json %>
