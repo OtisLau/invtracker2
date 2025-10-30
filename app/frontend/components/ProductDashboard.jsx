@@ -44,18 +44,18 @@ export default function ProductDashboard({ initialProducts, auth }) {
     }
 
     window.location.href = loginPath;
-  }, [loginPath]); 
+  }, [loginPath]);
 
   const handleLogout = useCallback(() => {
     if (!logoutPath) {
       return;
     } // this is the function that is called when the user clicks the sign out button
 
-    const form = document.createElement("form"); 
-    form.method = "POST";  
-    form.action = logoutPath; 
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = logoutPath;
 
-    const methodInput = document.createElement("input"); 
+    const methodInput = document.createElement("input");
     methodInput.type = "hidden";
     methodInput.name = "_method";
     methodInput.value = "delete";
@@ -76,7 +76,7 @@ export default function ProductDashboard({ initialProducts, auth }) {
     if (signedIn) {
       return [
         {
-          content: "Sign out", 
+          content: "Sign out",
           onAction: handleLogout,
         },
       ];
@@ -94,7 +94,6 @@ export default function ProductDashboard({ initialProducts, auth }) {
     return [];
   }, [signedIn, loginPath, handleLogin, handleLogout]);
 
-  
   return (
     <>
       <ProductModal
@@ -117,7 +116,7 @@ export default function ProductDashboard({ initialProducts, auth }) {
         }}
         secondaryActions={secondaryActions}
       >
-        <Layout> 
+        <Layout>
           <Layout.Section>
             {status ? (
               <Box paddingBlockEnd="200" marginBlockEnd="300">

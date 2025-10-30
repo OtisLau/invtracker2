@@ -147,7 +147,7 @@ export default function ProductTable({
                 </IndexTable.Cell>
                 <IndexTable.Cell>
                   <Box paddingBlock={cellPadding} width="100%">
-                    <InlineStack align="center" blockAlign="center" wrap={false} fullWidth> 
+                    <InlineStack align="center" blockAlign="center" wrap={false} fullWidth>
                       <Button
                         size="slim"
                         onClick={(event) => {

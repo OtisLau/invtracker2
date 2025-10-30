@@ -5,7 +5,7 @@ import {
   getCsrfToken,
 } from "../utils/products.js";
 
-// central brain for the dashboard 
+// central brain for the dashboard
 export function useProductManager(initialProducts) {
   // stash products locally and clean them up right away
   const [products, setProducts] = useState(
@@ -34,7 +34,7 @@ export function useProductManager(initialProducts) {
   useEffect(() => {
     if (!status) return;
 
-    // auto clear banner after 
+    // auto clear banner after
     const timeoutId = setTimeout(() => setStatus(null), 3000);
     return () => clearTimeout(timeoutId);
   }, [status]);

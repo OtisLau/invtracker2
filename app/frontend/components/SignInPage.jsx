@@ -26,7 +26,7 @@ export default function SignInPage({
   const [alert, setAlert] = useState(initialAlert ?? "");
   const [notice, setNotice] = useState(initialNotice ?? "");
 
-  const csrfToken = useMemo(() => getCsrfToken(), []); //this is that csrf token that we need to stop cross site request forgry 
+  const csrfToken = useMemo(() => getCsrfToken(), []); //this is that csrf token that we need to stop cross site request forgry
 
   useEffect(() => {
     if (!alert) {
@@ -52,7 +52,7 @@ export default function SignInPage({
     return () => window.clearTimeout(timeoutId);
   }, [notice]);
 
-  const handleEmailChange = useCallback((value) => { 
+  const handleEmailChange = useCallback((value) => {
     setEmail(value);
   }, []);
 
@@ -95,10 +95,10 @@ export default function SignInPage({
                 </Banner>
               </Box>
             ) : null}
-            <Card> 
+            <Card>
               <Box padding="400">
-                <form action={loginPath} method="post" onSubmit={handleSubmit}> 
-                  <input type="hidden" name="authenticity_token" value={csrfToken} /> 
+                <form action={loginPath} method="post" onSubmit={handleSubmit}>
+                  <input type="hidden" name="authenticity_token" value={csrfToken} />
                   <FormLayout>
                     <TextField
                       label="Email"
@@ -128,7 +128,7 @@ export default function SignInPage({
             </Card>
             <Box paddingBlockStart="400" textAlign="center">
               <Text as="p" variant="bodyMd">
-                Need an account? <Link url={registrationPath}>Create one</Link> 
+                Need an account? <Link url={registrationPath}>Create one</Link>
               </Text>
             </Box>
           </Box>
