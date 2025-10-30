@@ -5,7 +5,7 @@ import {
   getCsrfToken,
 } from "../utils/products.js";
 
-// central brain for the dashboard so components stay dumb and happy
+// central brain for the dashboard 
 export function useProductManager(initialProducts) {
   // stash products locally and clean them up right away
   const [products, setProducts] = useState(
@@ -28,13 +28,13 @@ export function useProductManager(initialProducts) {
   const [deletingId, setDeletingId] = useState(null);
   const [editingProduct, setEditingProduct] = useState(null);
 
-  // csrf token once, no need to recalc every render
+  // csrf token once no need to recalc every render
   const csrfToken = useMemo(() => getCsrfToken(), []);
 
   useEffect(() => {
     if (!status) return;
 
-    // auto clear banner after a bit so it doesn't hang around forever
+    // auto clear banner after 
     const timeoutId = setTimeout(() => setStatus(null), 3000);
     return () => clearTimeout(timeoutId);
   }, [status]);
@@ -99,7 +99,7 @@ export function useProductManager(initialProducts) {
     setModalOpen(true);
   };
 
-  // replace existing product or tack on the new one
+  // replace existing product or add new one
   const upsertProduct = (nextProduct) => {
     const casted = castProductAttributes(nextProduct);
     setProducts((prev) => {

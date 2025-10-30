@@ -7,8 +7,8 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def current_user # this is the current user 
-    @current_user ||= User.find_by(id: session[:user_id]) if session[:user_id] 
+  def current_user
+    @current_user = User.find_by(id: session[:user_id]) if session[:user_id]  # if session[:user_id] is present, find the user by id
   end 
 
   def user_signed_in?

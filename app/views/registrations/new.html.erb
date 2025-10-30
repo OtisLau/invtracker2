@@ -1,43 +1,16 @@
-<h1>Create your account</h1>
+<% store_value = params.dig(:user, :store_id) || @user.store_id %>
 
-<%= form_with model: @user, url: registrations_path, local: true do |form| %>
-  <div>
-    <%= form.label :name, "Name (optional)" %>
-    <%= form.text_field :name %>
-  </div>
+<div
+  id="registration-root"
+  data-registration-path="<%= registrations_path %>"
+  data-session-path="<%= new_session_path %>"
+  data-stores="<%= ERB::Util.json_escape(@stores.as_json(only: [:id, :name]).to_json) %>"
+  data-errors="<%= ERB::Util.json_escape(@user.errors.to_hash(full_messages: true).to_json) %>"
+  data-alert="<%= h(flash[:alert].to_s) %>"
+  data-notice="<%= h(flash[:notice].to_s) %>"
+  data-name-value="<%= h(@user.name.to_s) %>"
+  data-email-value="<%= h(@user.email.to_s) %>"
+  data-store-value="<%= h(store_value.to_s) %>"
+></div>
 
-  <div>
-    <%= form.label :email %>
-    <%= form.email_field :email, required: true %>
-  </div>
-
-  <div>
-    <%= form.label :password %>
-    <%= form.password_field :password, required: true %>
-  </div>
-
-  <div>
-    <%= form.label :password_confirmation %>
-    <%= form.password_field :password_confirmation, required: true %>
-  </div>
-
-  <div>
-    <%= form.label :store_id, "Store" %>
-    <% if @stores.any? %>
-      <%= form.collection_select :store_id, @stores, :id, :name, prompt: "Select a store" %>
-    <% else %>
-      <p>No stores available yet. Please contact an administrator.</p>
-    <% end %>
-  </div>
-
-  <p>Your account will be created with standard employee access.</p>
-
-  <div>
-    <%= form.submit "Create account" %>
-  </div>
-<% end %>
-
-<p>
-  Already have an account?
-  <%= link_to "Sign in", new_session_path %>
-</p>
+<%= vite_javascript_tag "registration.jsx" %>

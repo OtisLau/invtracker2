@@ -8,7 +8,7 @@ export function loadProducts() {
   }
 }
 
-export function getCsrfToken() {
+export function getCsrfToken() { // this is the csrf token that we need to stop cross site request forgery
   const meta = document.querySelector('meta[name="csrf-token"]');
   return meta ? meta.getAttribute("content") : "";
 }
