@@ -1,22 +1,12 @@
-<h1>Sign in</h1>
+<div
+  id="session-root"
+  data-login-path="<%= session_path %>"
+  data-registration-path="<%= new_registration_path %>"
+  data-alert="<%= h(flash[:alert].to_s) %>"
+  data-notice="<%= h(flash[:notice].to_s) %>"
+  data-email-value="<%= h(params[:email].to_s) %>"
+></div>
 
-<%= form_with url: session_path, method: :post, local: true do |form| %>
-  <div>
-    <%= form.label :email %>
-    <%= form.email_field :email, required: true, autofocus: true %>
-  </div>
 
-  <div>
-    <%= form.label :password %>
-    <%= form.password_field :password, required: true %>
-  </div>
 
-  <div>
-    <%= form.submit "Sign in" %>
-  </div>
-<% end %>
-
-<p>
-  Need an account?
-  <%= link_to "Create one", new_registration_path %>
-</p>
+<%= vite_javascript_tag "session.jsx" %>

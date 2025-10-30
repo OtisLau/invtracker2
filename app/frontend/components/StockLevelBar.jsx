@@ -33,18 +33,6 @@ export default function StockLevelBar({ onHand = 0, reorderPoint = 0, max = 0 })
     overBy: formatNumber(Math.max(safeOnHand - safeMax, 0)),
   };
 
-  // Screen reader text spells out the same story the visuals tell.
-  const ariaLabelParts = [
-    `On hand ${formatted.onHand} of max ${formatted.scaleMax}.`,
-  ];
-  if (hasReorderPoint) {
-    ariaLabelParts.push(`Reorder at ${formatted.reorder}.`);
-  }
-  if (isOverCapacity) {
-    ariaLabelParts.push(`Over capacity by ${formatted.overBy}.`);
-  }
-  const ariaLabel = ariaLabelParts.join(" ");
-
   const reorderMarkerStyle =
     reorderPercent === null
       ? undefined
@@ -92,8 +80,6 @@ export default function StockLevelBar({ onHand = 0, reorderPoint = 0, max = 0 })
           progress={onHandPercent}
           size="medium"
           tone={isLowStock ? "critical" : "success"}
-          label={ariaLabel}
-          labelHidden
         />
         {reorderMarkerStyle ? (
           <Box as="span" aria-hidden="true" style={reorderMarkerStyle} />

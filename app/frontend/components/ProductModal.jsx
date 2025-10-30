@@ -23,7 +23,6 @@ export default function ProductModal({
   const deleteLoading = Boolean(
     editingProduct && deletingId === editingProduct.id,
   );
-  // no rogue deletes if we're missing the product or mid request
   const deleteDisabled = !editingProduct || deleteLoading;
 
   // keep cancel wired into the modal footer props
@@ -68,7 +67,6 @@ export default function ProductModal({
       footer={footer}
     >
       <Modal.Section>
-        {/* form stays tiny so fields map straight to formValues */}
         <FormLayout>
           <TextField
             label="Name"
