@@ -1,24 +1,11 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+What InvTracker does (inventory dashboard + auth).
 
-Things you may want to cover:
+Tech stack (Rails 8, MySQL, React/Vite, Shopify Polaris).
 
-* Ruby version
+How to run it locally (bundle install, yarn install, bin/dev).
 
-* System dependencies
+Basic usage steps (create account, sign in, manage products).
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Testing command if you use one.
