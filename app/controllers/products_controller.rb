@@ -1,17 +1,14 @@
 class ProductsController < ApplicationController
+  # Core product CRUD endpoints.
+  protect_from_forgery with: :exception
 
+  before_action :set_product, only: %i[update destroy]
 
-  # core functionality crud 
-
-  protect_from_forgery with: :exception 
-
-  before_action :set_product, only: %i[ update destroy ] 
-
-  def index 
-    @products = current_user.store.products.order(:name) 
+  def index
+    @products = current_user.store.products.order(:name)
     respond_to do |format|
-      format.html 
-      format.json { render json: @products } 
+      format.html
+      format.json { render json: @products }
     end
   end
 
