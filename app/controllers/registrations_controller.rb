@@ -8,7 +8,6 @@ class RegistrationsController < ApplicationController
     @user = User.new
   end
 
-# this is the function that is called when the user submits the registration form
   def create
     @user = User.new(user_params)
     @user.email = @user.email.to_s.downcase
@@ -25,11 +24,11 @@ class RegistrationsController < ApplicationController
   end
 
   private
- # this is the function that is called when the user submits the registration form
+
   def user_params
     params.require(:user).permit(:name, :email, :password, :password_confirmation)
   end
-# this is the function that is called when the user selects a store
+
   def assign_store(user)
     store_id = params.dig(:user, :store_id)
     return if store_id.blank?
@@ -39,7 +38,7 @@ class RegistrationsController < ApplicationController
 
     user.errors.add(:store, "must exist")
   end
-# this is the function that is called when the user is created
+
   def default_role
     User.roles.fetch(:employee)
   end
