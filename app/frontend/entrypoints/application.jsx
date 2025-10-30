@@ -5,16 +5,18 @@ import "@shopify/polaris/build/esm/styles.css";
 import ProductDashboard from "../components/ProductDashboard.jsx";
 import { loadProducts } from "../utils/products.js";
 
-function App({ products, auth }) {
+function App({ products, auth }) { 
   return (
     <AppProvider i18n={{}}>
-      <ProductDashboard initialProducts={products} auth={auth} />
+      <ProductDashboard initialProducts={products} auth={auth} />  
     </AppProvider>
   );
 }
 
-const container = document.getElementById("root");
+const container = document.getElementById("root"); 
 
+
+// if the container is found, load the products and render the app
 if (container) {
   const products = loadProducts();
   const { userSignedIn, loginPath, logoutPath } = container.dataset;
